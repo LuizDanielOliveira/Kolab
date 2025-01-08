@@ -16,9 +16,8 @@ Este projeto é um feed de posts construído em **React + TypeScript** (usando *
 ## **Como Rodar**
 
 1. **Clonar** o repositório,
-   ```bash
-  cd kolab-desafio
-  npm install 
+  cd kolab-desafio,
+  npm install ,
   
   E para rodar o projeto : NPM RUN DEV
   
