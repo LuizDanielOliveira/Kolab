@@ -75,7 +75,6 @@ export default function Home() {
   }
 
   function handleCreatePost() {
-    // userId=1
     createLocalPost({
       userId: 1,
       title,
@@ -87,7 +86,6 @@ export default function Home() {
     setBody('');
     setImageUrl('');
 
-    // recarregar a lista
     setAllPosts(getPosts());
   }
 
@@ -142,7 +140,10 @@ export default function Home() {
 
       {filtered.map((p) => (
         <Box key={p.id} bg="white" p={3} mb={4} borderRadius="md">
-          <PostCard post={p} />
+          <PostCard
+            post={p}
+            onPostRemove={() => setAllPosts(getPosts())}
+          />
         </Box>
       ))}
     </Layout>

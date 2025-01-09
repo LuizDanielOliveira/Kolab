@@ -16,12 +16,12 @@ const AUTH_USER_ID = 1;
 
 interface PostCardProps {
   post: Post;
+  onPostRemove: () => void;
 }
 
-export default function PostCard({ post }: PostCardProps) {
+export default function PostCard({ post, onPostRemove }: PostCardProps) {
   const navigate = useNavigate();
 
-  const [isRemoved, setIsRemoved] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
   const [title, setTitle] = useState(post.title);
@@ -38,11 +38,6 @@ export default function PostCard({ post }: PostCardProps) {
     setComments(filtered);
   }, [post.id]);
 
-  // Se isRemoved, não renderiza nada
-  if (isRemoved) {
-    return null;
-  }
-
   function handleSavePost() {
     if (!isOwner) return;
     updateLocalPost(post.id, { title, body });
@@ -52,7 +47,9 @@ export default function PostCard({ post }: PostCardProps) {
   function handleRemovePost() {
     if (!isOwner) return;
     removeLocalPost(post.id);
-    setIsRemoved(true);
+
+    // Chama a função passada por props para atualizar a lista de posts
+    onPostRemove();
   }
 
   // Criar comentário
@@ -60,8 +57,8 @@ export default function PostCard({ post }: PostCardProps) {
   const [commentText, setCommentText] = useState('');
 
   function handleCreateComment() {
-    // se quiser permitir todos comentando, remova check
-    if (!isOwner) return;
+    if (!commentText.trim()) return; // Não criar comentário vazio
+
     createLocalComment({
       postId: post.id,
       userId: AUTH_USER_ID,
@@ -102,8 +99,8 @@ export default function PostCard({ post }: PostCardProps) {
         </Box>
       ) : (
         <>
-          <Heading size="sm">{post.title}</Heading>
-          <Text>{post.body}</Text>
+          <Heading size="sm">{title}</Heading>
+          <Text>{body}</Text>
           {post.imageUrl && (
             <Image
               src={post.imageUrl}
