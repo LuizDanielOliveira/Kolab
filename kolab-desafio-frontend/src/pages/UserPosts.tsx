@@ -18,6 +18,11 @@ export default function UserPosts() {
     setLoading(false);
   }, [userId]);
 
+  function handlePostRemove() {
+    const userPosts = getPosts().filter((p) => String(p.userId) === userId);
+    setPosts(userPosts);
+  }
+
   if (loading) {
     return (
       <Layout>
@@ -34,7 +39,7 @@ export default function UserPosts() {
       {posts.length === 0 && <Text>Nenhum post encontrado.</Text>}
       {posts.map((p) => (
         <Box key={p.id} bg="white" p={3} mb={4} borderRadius="md">
-          <PostCard post={p} />
+          <PostCard post={p} onPostRemove={handlePostRemove} />
         </Box>
       ))}
     </Layout>
